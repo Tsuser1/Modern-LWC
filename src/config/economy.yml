@@ -1,23 +1,10 @@
-# Precedence (order) for values LWC-Economy uses is:
-# PLAYER > GROUP > DEFAULT
 Economy:
     enabled: false
 
-    # If LWC-Economy should refund money paid for a protection when a player removes it.
-    # If a player gets a discount, they will be refunded the discount, not the full purchase price!
-    refunds: false
-
-    # Configure a server bank account for all charges to be deposited into (a central bank).
-    # When a protections is removed, money will be withdrawn from this account to refund the player.
-    # If the server account does not have  enough money, the player will not be able to remove the protection (to get their refund!)
-    #
-    # ! If blank, a server bank account will NOT be used
-    # ! If the bank account has not already been created, no one will be able to create or remove protections
-    # ! This feature is only supported by a limited amount of Economy plugins (such as iConomy and BOSEconomy.)
-    #
-    serverBankAccount: ''
-
     # The default price to charge for protections, which can overridden for groups or players
+    # Specific type of blocks/protection charge can be defined in core.yml
+    ## The resolution for protection charge is: core.yml > economy.yml
+    ## Discounts are also applied even protection-specific rate is set
     charge: 5.00
 
     # The amount of money the player is charged to ACCESS AND OPEN an inventory of a block that has been
@@ -34,6 +21,9 @@ Economy:
         type: EXACT
         amount: 5
         newCharge: 0.00
+
+# Precedence (order) for values LWC-Economy uses is:
+# PLAYER > GROUP > DEFAULT
 
 # Group overrides. Please note that these are CASE SENSITIVE
 groups:

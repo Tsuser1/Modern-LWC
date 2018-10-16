@@ -34,10 +34,10 @@ import com.griefcraft.model.History;
 import com.griefcraft.model.LWCPlayer;
 import com.griefcraft.model.Protection;
 import com.griefcraft.scripting.JavaModule;
-import com.griefcraft.scripting.event.*;
-import com.griefcraft.util.Colors;
+import com.griefcraft.scripting.event.LWCProtectionInteractEvent;
+import com.griefcraft.scripting.event.LWCProtectionRegisterEvent;
+import com.griefcraft.scripting.event.LWCProtectionRegistrationPostEvent;
 import com.griefcraft.util.config.Configuration;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -53,13 +53,24 @@ import java.util.logging.Logger;
 public class EconomyModule extends JavaModule {
 
     /**
+     * Total Strings in this module: 6
+     *
+     * lwc.econ.lockInsufficientBal    - [Error] To notify player is broke to create protection
+     * lwc.econ.openInsufficientBal    - [Error] To explain how much does a player need to open a protection
+     * lwc.econ.openChargeOkay         - [Info]  To notify a success charge for opening a protection
+     * lwc.econ.freeOfCharge           - [Info]  To notify the server paid for the protection fees
+     * lwc.econ.creationDiscountedOkay - [Info]  To notify a success discounted charge for creating protection
+     * lwc.econ.creationOkay           - [Info]  To notify a success charge for creating protection
+     */
+
+    /**
      * Our cache
      */
     private final Map<String, String> cache = new HashMap<>();
     private Logger logger = Logger.getLogger("LWC");
 
     /**
-     * The iConomy module configuration
+     * The economy module configuration
      */
     private Configuration configuration = Configuration.load("economy.yml");
 
@@ -103,67 +114,14 @@ public class EconomyModule extends JavaModule {
         // Can they afford it?
         if (!lwc.getCurrency().canAfford(player, usageFee)) {
             // Nope!
-            // TODO: Extract string to string.yml
-            player.sendMessage(Colors.Dark_Red + "You need " + lwc.getCurrency().format(usageFee) + " to open your protection!");
+            lwc.sendLocale(player, "lwc.econ.openInsufficientBal", "usageFee", lwc.getCurrency().format(usageFee));
             event.setResult(Result.CANCEL);
             return;
         }
 
         // Charge them!
         lwc.getCurrency().removeMoney(player, usageFee);
-        // TODO: Extract string to string.yml
-        player.sendMessage(Colors.Dark_Green + "You have been charged " + lwc.getCurrency().format(usageFee) + " to open your protection.");
-    }
-
-    @Override
-    public void onDestroyProtection(LWCProtectionDestroyEvent event) {
-        if (event.isCancelled())
-            return;
-
-        if (!configuration.getBoolean("Economy.enabled", true))
-            return;
-
-        // is refunding enabled?
-        if (!configuration.getBoolean("Economy.refunds", true))
-            return;
-
-        if (!LWC.getInstance().isHistoryEnabled())
-            return;
-
-        LWC lwc = event.getLWC();
-        Protection protection = event.getProtection();
-        Player player = event.getPlayer();
-
-        // first, do we still have a currency processor?
-        if (!lwc.getCurrency().isActive())
-            return;
-
-        // Does it support the server bank feature
-        if (!lwc.getCurrency().usingCentralBank())
-            return;
-
-        // load the transactions so we can check the server bank
-        List<History> transactions = protection.getRelatedHistory(History.Type.TRANSACTION);
-
-        for (History history : transactions) {
-            if (history.getStatus() == History.Status.INACTIVE)
-                continue;
-
-            // obtain the charge
-            double charge = history.getDouble("charge");
-
-            // No need to refund if it's negative or 0
-            if (charge <= 0)
-                continue;
-
-            // check the server bank
-            if (!lwc.getCurrency().canCentralBankAfford(charge)) {
-                // TODO: Extract string to string.yml
-                player.sendMessage(Colors.Dark_Red + "The Server's Bank does not contain enough funds to remove that protection!");
-                event.setCancelled(true);
-                return;
-            }
-        }
+        lwc.sendLocale(player, "lwc.econ.openChargeOkay", "usageFee", lwc.getCurrency().format(usageFee));
     }
 
     @Override
@@ -176,7 +134,7 @@ public class EconomyModule extends JavaModule {
 
         Protection protection = event.getProtection();
 
-        // we need to inject the iconomy price into the transaction!
+        // we need to inject the price into the transaction!
         Block block = protection.getBlock();
 
         // Uh-oh! This REALLY should never happen ... !
@@ -223,55 +181,6 @@ public class EconomyModule extends JavaModule {
     }
 
     @Override
-    public void onPostRemoval(LWCProtectionRemovePostEvent event) {
-        if (!configuration.getBoolean("Economy.enabled", true))
-            return;
-
-        // is refunding enabled?
-        if (!configuration.getBoolean("Economy.refunds", true))
-            return;
-
-        if (!LWC.getInstance().isHistoryEnabled())
-            return;
-
-        LWC lwc = event.getLWC();
-        Protection protection = event.getProtection();
-
-        // first, do we still have a currency processor?
-        if (!lwc.getCurrency().isActive())
-            return;
-
-        // we need to refund them, load up transactions
-        List<History> transactions = protection.getRelatedHistory(History.Type.TRANSACTION);
-
-        for (History history : transactions) {
-            if (history.getStatus() == History.Status.INACTIVE)
-                continue;
-
-            // obtain the charge
-            double charge = history.getDouble("charge");
-
-            // No need to refund if it's negative or 0
-            if (charge <= 0)
-                continue;
-
-            // refund them :)
-            Player owner = Bukkit.getServer().getPlayer(history.getPlayer());
-
-            // we can't pay them ..
-            if (owner == null)
-                continue;
-
-            // the currency to use
-            ICurrency currency = lwc.getCurrency();
-
-            currency.addMoney(owner, charge);
-            // TODO: Extract string to string.yml
-            owner.sendMessage(Colors.Dark_Green + "You have been refunded " + currency.format(charge) + " because an LWC protection of yours was removed!");
-        }
-    }
-
-    @Override
     public void onRegisterProtection(LWCProtectionRegisterEvent event) {
         if (event.isCancelled())
             return;
@@ -297,12 +206,13 @@ public class EconomyModule extends JavaModule {
 
         String value;
         // Check for a block override charge
-        // TODO: Implement description to main LWC configuration -- "core.yml"
-        if ((value = lwc.resolveProtectionConfiguration(block, "charge")) != null) {
+        // TODO: The NumberFormatException is so horrible that this if-else logic should be redesigned.
+        if ((value = lwc.resolveProtectionConfiguration(block, "creationCharge")) != null) {
             try {
                 charge = Double.parseDouble(value);
             } catch (NumberFormatException e) {
-                //TODO: Throw an error message for being weird on the price, then set value to zero.
+                logger.severe("The creation charge for block '" + block.toString() + "' is not a number, using default rate instead.");
+                e.printStackTrace();
             }
         } else charge = resolveDouble(player, "charge", false);
 
@@ -345,7 +255,7 @@ public class EconomyModule extends JavaModule {
                 }
             }
         } catch (NumberFormatException e) {
-            //TODO: Throw an error message for being weird on the price, then set value to zero.
+            // Reviewed: Do nothing is fine in this situation
         }
 
         // used for price cache
@@ -357,14 +267,11 @@ public class EconomyModule extends JavaModule {
 
         // Check if the charge is free
         if (charge == 0) {
-            // TODO: Extract string to string.yml
-            player.sendMessage(Colors.Dark_Green + "This one's on us!");
+            // TODO: This is soooooo annoying, create a knob in economy.yml to turn this off
+            lwc.sendLocale(player, "lwc.econ.freeOfCharge");
         } else {
             if (!currency.canAfford(player, charge)) {
-                // TODO: Extract string to string.yml
-                player.sendMessage(Colors.Dark_Red + "You do not have enough " + currency.getMoneyName() + " to buy an LWC protection.");
-                // TODO: Extract string to string.yml
-                player.sendMessage(Colors.Dark_Red + "The balance required for an LWC protection is: " + currency.format(charge));
+                lwc.sendLocale(player, "lwc.econ.lockInsufficientBal", "currencyName", currency.getMoneyName(), "charge", lwc.getCurrency().format(charge));
 
                 // remove from cache
                 priceCache.remove(location);
@@ -374,8 +281,7 @@ public class EconomyModule extends JavaModule {
 
             // remove the money from their account
             currency.removeMoney(player, charge);
-            // TODO: Extract string to string.yml
-            player.sendMessage(Colors.Dark_Green + "Charged " + currency.format(charge) + (usedDiscount ? (Colors.Dark_Red + " (Discount)" + Colors.Dark_Green) : "") + " for an LWC protection. Thank you.");
+            lwc.sendLocale(player, usedDiscount ? "lwc.econ.creationDiscountedOkay" : "lwc.econ.creationOkay", lwc.getCurrency().format(charge));
         }
 
     }

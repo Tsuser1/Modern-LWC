@@ -161,7 +161,11 @@ protections:
     # If you use the Id, you MUST encase it in quotes, for example (chest):
     # '54':
     #     enabled: true
+    #     creationCharge: 10
     # The custom protection must also have enabled: true under it for it to function in the world
+    #
+    # Note: If an 'creationCharge' option is defined for a specific protection,
+    # it will override the charge configuration set in economy.yml
     blocks:
         chest:
             enabled: true
