@@ -268,7 +268,7 @@ public class EconomyModule extends JavaModule {
         // Check if the charge is free
         if (charge == 0) {
             // TODO: This is soooooo annoying, create a knob in economy.yml to turn this off
-            lwc.sendLocale(player, "lwc.econ.freeOfCharge");
+            lwc.sendLocale(player, "lwc.econ.creationFreeOfCharge");
         } else {
             if (!currency.canAfford(player, charge)) {
                 lwc.sendLocale(player, "lwc.econ.lockInsufficientBal", "currencyName", currency.getMoneyName(), "charge", lwc.getCurrency().format(charge));
