@@ -164,7 +164,7 @@ protections:
     #     creationCharge: 10
     # The custom protection must also have enabled: true under it for it to function in the world
     #
-    # Note: If an 'creationCharge' option is defined for a specific protection,
+    # Note: If a 'creationCharge' option is defined for a specific protection,
     # it will override the charge configuration set in economy.yml
     blocks:
         chest:
