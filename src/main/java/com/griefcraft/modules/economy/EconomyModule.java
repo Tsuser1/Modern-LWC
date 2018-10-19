@@ -53,17 +53,6 @@ import java.util.logging.Logger;
 public class EconomyModule extends JavaModule {
 
     /**
-     * Total Strings in this module: 6
-     *
-     * lwc.econ.lockInsufficientBal    - [Error] To notify player is broke to create protection
-     * lwc.econ.openInsufficientBal    - [Error] To explain how much does a player need to open a protection
-     * lwc.econ.openChargeOkay         - [Info]  To notify a success charge for opening a protection
-     * lwc.econ.freeOfCharge           - [Info]  To notify the server paid for the protection fees
-     * lwc.econ.creationDiscountedOkay - [Info]  To notify a success discounted charge for creating protection
-     * lwc.econ.creationOkay           - [Info]  To notify a success charge for creating protection
-     */
-
-    /**
      * Our cache
      */
     private final Map<String, String> cache = new HashMap<>();
