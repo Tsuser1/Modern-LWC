@@ -39,7 +39,7 @@ import com.griefcraft.scripting.event.LWCProtectionRegisterEvent;
 import com.griefcraft.util.Colors;
 import com.griefcraft.util.config.Configuration;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.Vector3;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.internal.permission.RegionPermissionModel;
@@ -355,7 +355,7 @@ public class WorldGuard extends JavaModule {
         }
 
         // Create a vector for the region
-        Vector3 vector = BukkitAdapter.asBlockVector(block.getLocation());
+        BlockVector3 vector = BukkitAdapter.asBlockVector(block.getLocation());
 
         // Load the regions the block encompasses
         List<String> regions = regionManager.getApplicableRegionsIDs(vector);
