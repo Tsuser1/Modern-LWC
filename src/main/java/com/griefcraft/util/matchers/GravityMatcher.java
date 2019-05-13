@@ -28,12 +28,12 @@
 
 package com.griefcraft.util.matchers;
 
+import com.griefcraft.util.VersionUtils;
 import com.griefcraft.util.ProtectionFinder;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -41,18 +41,7 @@ import java.util.Set;
  */
 public class GravityMatcher implements ProtectionFinder.Matcher {
 
-    public static final Set<Material> PROTECTABLES_POSTS = EnumSet.of(Material.OAK_SIGN, Material.BIRCH_SIGN,
-            Material.SPRUCE_SIGN, Material.JUNGLE_SIGN, Material.ACACIA_SIGN, Material.DARK_OAK_SIGN, Material.RAIL,
-            Material.ACTIVATOR_RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL, Material.LEVER, Material.OAK_BUTTON,
-            Material.BIRCH_BUTTON, Material.SPRUCE_BUTTON, Material.JUNGLE_BUTTON, Material.ACACIA_BUTTON,
-            Material.DARK_OAK_BUTTON, Material.STONE_BUTTON, Material.OAK_PRESSURE_PLATE,
-            Material.SPRUCE_PRESSURE_PLATE, Material.BIRCH_PRESSURE_PLATE, Material.JUNGLE_PRESSURE_PLATE,
-            Material.ACACIA_PRESSURE_PLATE, Material.DARK_OAK_PRESSURE_PLATE, Material.STONE_PRESSURE_PLATE,
-            Material.LIGHT_WEIGHTED_PRESSURE_PLATE, Material.HEAVY_WEIGHTED_PRESSURE_PLATE, Material.WHITE_BANNER,
-            Material.ORANGE_BANNER, Material.MAGENTA_BANNER, Material.LIGHT_BLUE_BANNER, Material.YELLOW_BANNER,
-            Material.LIME_BANNER, Material.PINK_BANNER, Material.GRAY_BANNER, Material.LIGHT_GRAY_BANNER,
-            Material.CYAN_BANNER, Material.PURPLE_BANNER, Material.BLUE_BANNER, Material.BROWN_BANNER,
-            Material.GREEN_BANNER, Material.RED_BANNER, Material.BLACK_BANNER, Material.ARMOR_STAND);
+    public static final Set<Material> PROTECTABLES_POSTS = VersionUtils.gravityMatcherSet();
 
     public boolean matches(ProtectionFinder finder) {
         Block block = finder.getBaseBlock().getBlock();
