@@ -28,7 +28,7 @@
 
 package com.griefcraft.util.matchers;
 
-import com.griefcraft.util.VersionUtils;
+import com.griefcraft.util.VersionUtil;
 import com.griefcraft.util.ProtectionFinder;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -41,7 +41,7 @@ import java.util.Set;
  */
 public class GravityMatcher implements ProtectionFinder.Matcher {
 
-    public static final Set<Material> PROTECTABLES_POSTS = VersionUtils.gravityMatcherSet();
+    public static final Set<Material> PROTECTABLES_POSTS = VersionUtil.gravityMatcherSet();
 
     public boolean matches(ProtectionFinder finder) {
         Block block = finder.getBaseBlock().getBlock();

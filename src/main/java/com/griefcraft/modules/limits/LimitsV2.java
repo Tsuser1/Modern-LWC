@@ -36,7 +36,7 @@ import com.griefcraft.scripting.event.LWCCommandEvent;
 import com.griefcraft.scripting.event.LWCProtectionRegisterEvent;
 import com.griefcraft.scripting.event.LWCReloadEvent;
 import com.griefcraft.util.Colors;
-import com.griefcraft.util.VersionUtils;
+import com.griefcraft.util.VersionUtil;
 import com.griefcraft.util.config.Configuration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -97,7 +97,7 @@ public class LimitsV2 extends JavaModule {
     /**
      * Set of materials for the various sign blocks used in the sign limit
      */
-    private final Set<Material> signs = VersionUtils.getSignSet();
+    private final Set<Material> signs = VersionUtil.getSignSet();
 
     {
         for (Material material : Material.values()) {

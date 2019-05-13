@@ -41,8 +41,8 @@ import com.griefcraft.modules.limits.LimitsModule;
 import com.griefcraft.scripting.Module;
 import com.griefcraft.util.MaterialUtil;
 import com.griefcraft.util.UUIDRegistry;
+import com.griefcraft.util.VersionUtil;
 import com.griefcraft.util.config.Configuration;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -60,8 +60,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PhysDB extends Database {
 
@@ -2297,11 +2295,7 @@ public class PhysDB extends Database {
      * Update the database for the "Village and Pillage" update, otherwise known as MineCraft 1.14.
      */
     private void doUpdateVillageAndPillage() {
-        Matcher versionCheck = Pattern.compile("\\d[.]\\d+").matcher(Bukkit.getVersion());
-        if (!versionCheck.find()) {
-            return;
-        }
-        int minorVersion = Integer.parseInt(versionCheck.group().substring(2));
+        int minorVersion = VersionUtil.versionCheck();
         if (minorVersion >= 14) {
             Statement statement = null;
             try {

@@ -28,7 +28,7 @@
 
 package com.griefcraft.util.matchers;
 
-import com.griefcraft.util.VersionUtils;
+import com.griefcraft.util.VersionUtil;
 import com.griefcraft.util.ProtectionFinder;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,7 +48,7 @@ public class WallMatcher implements ProtectionFinder.Matcher {
      * Blocks that can be attached to the wall and be protected. This assumes that
      * the block is DESTROYED if the wall they are attached to is broken.
      */
-    public static final Set<Material> PROTECTABLES_WALL = VersionUtils.wallMatcherSet();
+    public static final Set<Material> PROTECTABLES_WALL = VersionUtil.wallMatcherSet();
 
     /**
      * Those evil levers and buttons have all different bits for directions. Gah!
