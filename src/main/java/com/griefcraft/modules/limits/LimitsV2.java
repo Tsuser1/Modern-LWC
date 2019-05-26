@@ -95,7 +95,7 @@ public class LimitsV2 extends JavaModule {
     private final Map<String, Material> materialCache = new HashMap<>();
 
     /**
-     * Set of materials for the various sign blocks used in the sign limi
+     * Set of materials for the various sign blocks used in the sign limit
      */
     private final Set<Material> signs = VersionUtil.getLimitV2Set();
 
