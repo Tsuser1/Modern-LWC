@@ -97,7 +97,7 @@ public class LimitsV2 extends JavaModule {
     /**
      * Set of materials for the various sign blocks used in the sign limit
      */
-    private final Set<Material> signs = VersionUtil.getSignSet();
+    private final Set<Material> signs = VersionUtil.getLimitV2Set();
 
     {
         for (Material material : Material.values()) {

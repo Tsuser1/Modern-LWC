@@ -16,13 +16,13 @@ public class VersionUtil {
      * method that determines which signs Set to use for the LimitsV2 class
      * @return set of signs
      */
-    public static Set<Material> getSignSet(){
+    public static Set<Material> getLimitV2Set(){
         int versionNum = versionCheck();
         Set<Material> signs = new HashSet<Material>();
         if (versionNum == 14){
-            signs = getSigns1_14();
+            signs = getLimitV2Set1_14();
         }else{
-            signs = getSigns1_13();
+            signs = getLimitV2Set1_13();
         }
         return signs;
     }
@@ -31,13 +31,13 @@ public class VersionUtil {
      * method that determines which signs Set to use for the GravityMatcher class
      * @return set of signs
      */
-    public static Set<Material> gravityMatcherSet(){
+    public static Set<Material> getGravityMatcherSet(){
         int versionNum = versionCheck();
         Set<Material> gravityMatcher = new HashSet<Material>();
         if (versionNum == 14){
-            gravityMatcher = gravityMatcherSet1_14();
+            gravityMatcher = getGravityMatcherSet1_14();
         }else{
-            gravityMatcher = gravityMatcherSet1_13();
+            gravityMatcher = getGravityMatcherSet1_13();
         }
         return gravityMatcher;
     }
@@ -46,13 +46,13 @@ public class VersionUtil {
      * method that determines which signs Set to use for the WallMatcher class
      * @return set of signs
      */
-    public static Set<Material> wallMatcherSet(){
+    public static Set<Material> getWallMatcherSet(){
         int versionNum = versionCheck();
         Set<Material> wallMatcher = new HashSet<Material>();
         if (versionNum == 14){
-            wallMatcher = wallMatcherSet1_14();
+            wallMatcher = getWallMatcherSet1_14();
         }else{
-            wallMatcher = wallMatcherSet1_13();
+            wallMatcher = getWallMatcherSet1_13();
         }
         return wallMatcher;
     }
@@ -74,18 +74,18 @@ public class VersionUtil {
      * private helper methods that assigns proper sign types for 1.13 and 1.14
      * @return a set of legacy signs for 1.13 and updated sign types for 1.14
      */
-    private static Set<Material> getSigns1_13(){
+    private static Set<Material> getLimitV2Set1_13(){
         return EnumSet.of(Material.LEGACY_SIGN, Material.LEGACY_WALL_SIGN);
     }
 
-    private static Set<Material> getSigns1_14(){
+    private static Set<Material> getLimitV2Set1_14(){
         return EnumSet.of(Material.OAK_WALL_SIGN, Material.BIRCH_WALL_SIGN,
                 Material.SPRUCE_WALL_SIGN, Material.JUNGLE_WALL_SIGN, Material.ACACIA_WALL_SIGN,
                 Material.DARK_OAK_WALL_SIGN, Material.OAK_SIGN, Material.BIRCH_SIGN, Material.SPRUCE_SIGN,
                 Material.JUNGLE_SIGN, Material.ACACIA_SIGN, Material.DARK_OAK_SIGN);
     }
 
-    private static Set<Material> wallMatcherSet1_13(){
+    private static Set<Material> getWallMatcherSet1_13(){
         return EnumSet.of(Material.LEGACY_WALL_SIGN, Material.WHITE_WALL_BANNER, Material.ORANGE_WALL_BANNER,
                 Material.MAGENTA_WALL_BANNER, Material.LIGHT_BLUE_WALL_BANNER, Material.YELLOW_WALL_BANNER,
                 Material.LIME_WALL_BANNER, Material.PINK_WALL_BANNER, Material.GRAY_WALL_BANNER,
@@ -94,7 +94,7 @@ public class VersionUtil {
                 Material.RED_WALL_BANNER, Material.BLACK_WALL_BANNER);
     }
 
-    private static Set<Material> wallMatcherSet1_14(){
+    private static Set<Material> getWallMatcherSet1_14(){
         return EnumSet.of(Material.OAK_WALL_SIGN, Material.BIRCH_WALL_SIGN,
                 Material.SPRUCE_WALL_SIGN, Material.JUNGLE_WALL_SIGN, Material.ACACIA_WALL_SIGN,
                 Material.DARK_OAK_WALL_SIGN, Material.WHITE_WALL_BANNER, Material.ORANGE_WALL_BANNER,
@@ -105,7 +105,7 @@ public class VersionUtil {
                 Material.RED_WALL_BANNER, Material.BLACK_WALL_BANNER);
     }
 
-    private static Set<Material> gravityMatcherSet1_13(){
+    private static Set<Material> getGravityMatcherSet1_13(){
         return EnumSet.of(Material.LEGACY_SIGN, Material.RAIL,
                 Material.ACTIVATOR_RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL, Material.LEVER, Material.OAK_BUTTON,
                 Material.BIRCH_BUTTON, Material.SPRUCE_BUTTON, Material.JUNGLE_BUTTON, Material.ACACIA_BUTTON,
@@ -119,7 +119,7 @@ public class VersionUtil {
                 Material.GREEN_BANNER, Material.RED_BANNER, Material.BLACK_BANNER, Material.ARMOR_STAND);
     }
 
-    private static Set<Material> gravityMatcherSet1_14(){
+    private static Set<Material> getGravityMatcherSet1_14(){
         return EnumSet.of(Material.OAK_SIGN, Material.BIRCH_SIGN,
                 Material.SPRUCE_SIGN, Material.JUNGLE_SIGN, Material.ACACIA_SIGN, Material.DARK_OAK_SIGN, Material.RAIL,
                 Material.ACTIVATOR_RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL, Material.LEVER, Material.OAK_BUTTON,
