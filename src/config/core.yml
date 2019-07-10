@@ -261,6 +261,18 @@ protections:
             autoRegister: private
         sign:
             enabled: true
+        acacia_sign:
+            enabled: true
+        birch_sign:
+            enabled: true
+        dark_oak_sign:
+            enabled: true
+        jungle_sign:
+            enabled: true
+        oak_sign:
+            enabled: true
+        spruce_sign:
+            enabled: true
         iron_door:
             enabled: true
         oak_door:
